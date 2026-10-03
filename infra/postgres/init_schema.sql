@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    github_id VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    access_token TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS repositories (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    repo_name VARCHAR(255) NOT NULL,
+    clone_url TEXT NOT NULL,
+    webhook_active BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS deployments (
+    id SERIAL PRIMARY KEY,
+    repo_id INT REFERENCES repositories(id) ON DELETE CASCADE,
+    status VARCHAR(50) DEFAULT 'PENDING',
+    log_output TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

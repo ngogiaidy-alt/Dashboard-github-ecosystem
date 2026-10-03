@@ -1,0 +1,4 @@
+redis
+pydub
+faster-whisper
+requests
